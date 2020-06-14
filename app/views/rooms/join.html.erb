@@ -16,6 +16,148 @@
 <% valid_access_code = @room.access_code.nil? || @room.access_code.empty? || @room.access_code == session[:access_code] %>
 <%= render 'rooms/components/room_event', render_recordings: valid_access_code do %>
   <% if room_authentication_required %>
+    <style>
+        .dsgvo-banner {
+            height: 100%;
+            color: black;
+            background-color: #a5e1ffd8;
+            overflow-y: scroll;
+        }
+        
+        .dsgvo-banner-content {
+            margin: 0 auto;
+            margin-bottom: 5rem;
+            background-color: #f0f0f0;
+            border-radius: 0 0 1rem 1rem;
+            box-shadow: 1px 1px 15px black;
+            width: 70%;
+        }
+        
+        .dsgvo-banner-content>h1 {
+            margin: 0 auto;
+            text-align: left;
+            width: 80%;
+            padding-bottom: 1rem;
+        }
+        
+        .dsgvo-textbox {
+            margin: 0 auto;
+            width: 80%;
+            height: 20rem;
+            overflow-y: scroll;
+            background-color: rgba(252, 141, 67, 0.15);
+            border: rgba(252, 141, 67, 0.65) solid 2px;
+            border-radius: 0.4em;
+            padding: 0.5rem;
+            display: block;
+            margin: 0 auto;
+            resize: none;
+            text-align: left;
+        }
+        
+        .dsgvo-warning-text {
+            display: inline-block;
+            padding-top: 0.5rem;
+            text-align: left;
+            width: 80%;
+        }
+        
+        .dsgvo-banner #dsgvo-agree-button {
+            background-color: rgba(119, 188, 95, 1) !important;
+            border: 1px solid rgba(63, 100, 51, 0.575);
+            padding: 1rem;
+        }
+        
+        .dsgvo-banner #dsgvo-disagree-button {
+            background-color: rgb(188, 95, 95) !important;
+            border: 1px solid rgba(63, 100, 51, 0.575);
+            margin-right: 1.5rem;
+        }
+    </style>
+    <script language="javascript" type="text/javascript">
+        function dsvgobuttonclick() {
+            $(".dsgvo-banner").attr("style", "display:none !important")
+        }
+    </script>
+    <div class="dsgvo-banner fixed-bottom text-center d-inline-block">
+        <div class="dsgvo-banner-content py-3">
+            <h1>Datenschutz Vereinbarung</h1>
+            <div class="dsgvo-textbox">
+                <h3><strong>Datenschutzrechtliche Informationen nach Art. 12 DS-GVO</strong></h3>
+                <p>Auf dieser Seite informieren wir Sie &uuml;ber die zur Nutzung von unserem Webkonferenz- und digitalem Lernsystem <strong>BigBlueButton</strong> erforderliche Verarbeitung von personenbezogenen Daten.</p>
+                <h4>Wer ist verantwortlich f&uuml;r die Verarbeitung der Daten meines Kindes?</h4>
+                <p>Verantwortlich ist die Schule:</p>
+                <p><strong>Lyonel-Feininger-Gymnasium Buttelstedt/Mellingen</strong></p>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td width="301">
+                                <p>Schulteil Mellingen</p>
+                                <p>Umpferstedter Str. 18a</p>
+                                <p>99441 Mellingen</p>
+                                <p>Tel: 036453/81313</p>
+                                <p>Fax: 036453/81315</p>
+                                <p>E-Mail: <a href="mailto:gym-mellingen@t-online.de">gym-mellingen@t-online.de</a></p>
+                            </td>
+                            <td width="301">
+                                <p>Schulteil Buttelstedt</p>
+                                <p>Volkmarsener Platz 1</p>
+                                <p>99439 Buttelstedt</p>
+                                <p>Tel: 036451/60414</p>
+                                <p>Fax: 036451/60415</p>
+                                <p>E-Mail: <a href="mailto:gym-buttelstedt-mellingen@t-online.de">gym-buttelstedt-mellingen@t-online.de</a></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>An wen kann ich mich wenden, wenn ich Fragen zum Datenschutz habe?</h4>
+                <p>Fragen zum Datenschutz k&ouml;nnen Sie an den beh&ouml;rdlich bestellten schulischen Datenschutzbeauftragten stellen: <a href="mailto:datenschutz.mittelthueringen@schulamt.thueringen.de">datenschutz.mittelthueringen@schulamt.thueringen.de</a>                    oder unserer Postadresse mit dem Zusatz &bdquo;der Datenschutzbeauftragte&ldquo;</p>
+                <h4>Zu welchem Zweck sollen die Daten meines Kindes verarbeitet werden?</h4>
+                <p>Die Verarbeitung ist erforderlich zur Nutzung von <strong>BigBlueButton</strong>, einer Webkonferenz-Plattform, zur Durchf&uuml;hrung von Online-Unterrichtseinheiten in der Lerngruppe und individueller Betreuung und Beratung in Kleingruppen
+                    oder Einzeltreffen zwischen Sch&uuml;ler und Lehrkraft.</p>
+                <h4>Auf welcher Rechtsgrundlage erfolgt die Verarbeitung?</h4>
+                <p>Die Verarbeitung erfolgt auf der Grundlage Ihrer Einwilligung.</p>
+                <h4>Welche personenbezogenen Daten meines Kindes werden bei Teilnahme an einer BigBlueButton Webkonferenz verarbeitet?</h4>
+                <p>F&uuml;r die Teilnahme an einer BigBlueButton Webkonferenz ist <strong>kein eigenes Nutzerkonto</strong> erforderlich. W&auml;hrend einer Webkonferenz werden Metadaten zur Konferenz verarbeitet: Thema, Beschreibung (optional), IP-Nummer
+                    des Teilnehmers und Informationen zum genutzten Endger&auml;t. Bei Nutzung des Chats in BigBlueButton sind die Chat Inhalte Gegenstand der Verarbeitung. Bei Bestehen eines Nutzerkontos (nicht erforderlich), werden au&szlig;erdem folgende
+                    Daten verarbeitet: Name (frei w&auml;hlbar), Nachname, E-Mail, Passwort, Profilbild (optional). Falls eine Aufzeichnung der Konferenz vorgenommen wird, ist dies durch den Konferenzleiter im Einvernehmen mit den Teilnehmern abzustimmen.
+                    Gespeicherte Daten von Webkonferenzen und Chats werden nach vier Wochen gel&ouml;scht, sobald sie f&uuml;r den Unterricht nicht mehr ben&ouml;tigt werden.</p>
+                <h4>Wer hat Zugriff auf die personenbezogenen Daten meines Kindes?</h4>
+                <p><strong>Die Schule</strong> hat <strong>keinen</strong> Zugriff auf Nutzerdaten, falls solche von Sch&uuml;lern erstellt werden. <strong>Alle Teilnehmer einer Webkonferenz</strong> haben Zugriff im Sinne von Sehen, H&ouml;ren und Lesen
+                    auf Inhalte der Webkonferenz und Chats. <strong>Der Anbieter</strong> hat Zugriff auf die verarbeiteten Daten im Rahmen der Auftragsverarbeitung und auf Weisung der Schulleitung.</p>
+                <h4>An wen werden die Daten meines Kindes &uuml;bermittelt?</h4>
+                <p>Das Lyonel-Feininger-Gymnasium, welches mit Unterst&uuml;tzung von einem ehemaligen Sch&uuml;ler die Webkonferenz Plattform auf eigenen Servern betreibt, verarbeitet die anonymisierten Daten Ihres Kindes. D.h. wir d&uuml;rfen die Daten
+                    nur f&uuml;r diesen Zweck der Webkonferenz und nicht f&uuml;r anderweitige Zwecke nutzen, d.h. weder f&uuml;r Werbung noch an Dritte weitergeben.</p>
+                <h4>Wie lange werden die Daten meines Kindes gespeichert?</h4>
+                <p>Die Schule speichert keine personenbezogenen Daten im Zusammenhang mit der Nutzung von BigBlueButton. Falls eine Aufzeichnung der Konferenz vorgenommen wird, ist dies durch den Konferenzleiter im Einvernehmen mit den Teilnehmern abzustimmen.
+                    Gespeicherte Daten von Webkonferenzen und Chats werden nach vier Wochen gel&ouml;scht, sobald sie f&uuml;r den Unterricht nicht mehr ben&ouml;tigt werden. Die Inhalte von Chats und Pr&auml;sentationen werden gel&ouml;scht, sobald ein
+                    Konferenzraum geschlossen wird.</p>
+            </div>
+            <span class="dsgvo-warning-text pr-5">
+              Die Teilnahme an einer Webkonferenz ist <b>freiwillig</b> und erfordert <b>kein</b> eigenes Nutzerkonto. 
+              <br>
+              Teilnehmer können bei einer Webkonferenz einen eigenen Nutzernamen wählen. <br>
+              Wir haben Schulkonten, welche von Lehrkräften genutzt werden, um die Webkonferenzen durchzuführen. 
+              <br>
+              Alle Inhalte der Webkonferenzen und begleitenden Chats bleiben im Kreis der Teilnehmer. <br>
+              Aufzeichnungen der Webkonferenzen durch den Konferenzleiter finden nur im Einvernehmen mit den Schülern und den Eltern statt. <br>
+              Schüler sind gehalten, bei einer Webkonferenz darauf zu achten, dass die Privatsphäre ihrer Familienmitglieder gewahrt bleibt. 
+              <br>
+              Bei Verstößen gegen diese Regel behält die Schule sich vor, Ihr Kind von Webkonferenzen auszuschließen bzw. die Teilnahme auf Audio zu beschränken.
+              <br><br>
+              Durch fortfahren bestätigen Sie, dass Sie älter als 16 Jahre sind oder die Zustimmung eines Erziehungsberechtigten haben <br>und  stimmen den Vereinbarungen zur Nutzung von BigBlueButton zu.
+            </span>
+        <br>
+            <span class="dsgvo-warning-button d-inline-block">
+                <a href="https://classroom.lyonel-feininger-gymnasium.de/">
+                    <button id="dsgvo-disagree-button" class="btn customBtn bg-primary" >Ich lehne ab</button>
+                </a>
+            </span>
+            <span class="dsgvo-warning-button d-inline-block">
+                <button id="dsgvo-agree-button" class="btn customBtn bg-primary" onclick="dsvgobuttonclick()">Ich stimme zu</button>
+            </span>
+        </div>
+    </div>
     <h2><%= t("administrator.site_settings.authentication.user-info") %></h2>
   <% elsif !valid_access_code %>
     <%= form_for :room, url: login_room_path(@room.uid) do |f| %>
@@ -30,6 +172,145 @@
       </div>
     <% end %>
   <% else %>
+  <style>
+        .dsgvo-banner {
+            height: 100%;
+            color: black;
+            background-color: #a5e1ffd8;
+            overflow-y: scroll;
+        }
+        
+        .dsgvo-banner-content {
+            margin: 0 auto;
+            margin-bottom: 5rem;
+            background-color: #f0f0f0;
+            border-radius: 0 0 1rem 1rem;
+            box-shadow: 1px 1px 15px black;
+            width: 70%;
+        }
+        
+        .dsgvo-banner-content>h1 {
+            margin: 0 auto;
+            text-align: left;
+            width: 80%;
+            padding-bottom: 1rem;
+        }
+        
+        .dsgvo-textbox {
+            margin: 0 auto;
+            width: 80%;
+            height: 20rem;
+            overflow-y: scroll;
+            background-color: rgba(252, 141, 67, 0.15);
+            border: rgba(252, 141, 67, 0.65) solid 2px;
+            border-radius: 0.4em;
+            padding: 0.5rem;
+            display: block;
+            margin: 0 auto;
+            resize: none;
+            text-align: left;
+        }
+        
+        .dsgvo-warning-text {
+            display: inline-block;
+            padding-top: 0.5rem;
+            text-align: left;
+            width: 80%;
+        }
+        
+        .dsgvo-banner #dsgvo-agree-button {
+            background-color: rgba(119, 188, 95, 1) !important;
+            border: 1px solid rgba(63, 100, 51, 0.575);
+            padding: 1rem;
+        }
+        
+        .dsgvo-banner #dsgvo-disagree-button {
+            background-color: rgb(188, 95, 95) !important;
+            border: 1px solid rgba(63, 100, 51, 0.575);
+            margin-right: 1.5rem;
+        }
+    </style>
+    <script language="javascript" type="text/javascript">
+        function dsvgobuttonclick() {
+            $(".dsgvo-banner").attr("style", "display:none !important")
+        }
+    </script>
+    <div class="dsgvo-banner fixed-bottom text-center d-inline-block">
+        <div class="dsgvo-banner-content py-3">
+            <h1>Datenschutz Vereinbarung</h1>
+            <div class="dsgvo-textbox">
+                <h3><strong>Datenschutzrechtliche Informationen nach Art. 12 DS-GVO</strong></h3>
+                <p>Auf dieser Seite informieren wir Sie &uuml;ber die zur Nutzung von unserem Webkonferenz- und digitalem Lernsystem <strong>BigBlueButton</strong> erforderliche Verarbeitung von personenbezogenen Daten.</p>
+                <h4>Wer ist verantwortlich f&uuml;r die Verarbeitung der Daten meines Kindes?</h4>
+                <p>Verantwortlich ist die Schule:</p>
+                <p><strong>Lyonel-Feininger-Gymnasium Buttelstedt/Mellingen</strong></p>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td width="301">
+                                <p>Schulteil Mellingen</p>
+                                <p>Umpferstedter Str. 18a</p>
+                                <p>99441 Mellingen</p>
+                                <p>Tel: 036453/81313</p>
+                                <p>Fax: 036453/81315</p>
+                                <p>E-Mail: <a href="mailto:gym-mellingen@t-online.de">gym-mellingen@t-online.de</a></p>
+                            </td>
+                            <td width="301">
+                                <p>Schulteil Buttelstedt</p>
+                                <p>Volkmarsener Platz 1</p>
+                                <p>99439 Buttelstedt</p>
+                                <p>Tel: 036451/60414</p>
+                                <p>Fax: 036451/60415</p>
+                                <p>E-Mail: <a href="mailto:gym-buttelstedt-mellingen@t-online.de">gym-buttelstedt-mellingen@t-online.de</a></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4>An wen kann ich mich wenden, wenn ich Fragen zum Datenschutz habe?</h4>
+                <p>Fragen zum Datenschutz k&ouml;nnen Sie an den beh&ouml;rdlich bestellten schulischen Datenschutzbeauftragten stellen: <a href="mailto:datenschutz.mittelthueringen@schulamt.thueringen.de">datenschutz.mittelthueringen@schulamt.thueringen.de</a>                    oder unserer Postadresse mit dem Zusatz &bdquo;der Datenschutzbeauftragte&ldquo;</p>
+                <h4>Zu welchem Zweck sollen die Daten meines Kindes verarbeitet werden?</h4>
+                <p>Die Verarbeitung ist erforderlich zur Nutzung von <strong>BigBlueButton</strong>, einer Webkonferenz-Plattform, zur Durchf&uuml;hrung von Online-Unterrichtseinheiten in der Lerngruppe und individueller Betreuung und Beratung in Kleingruppen
+                    oder Einzeltreffen zwischen Sch&uuml;ler und Lehrkraft.</p>
+                <h4>Auf welcher Rechtsgrundlage erfolgt die Verarbeitung?</h4>
+                <p>Die Verarbeitung erfolgt auf der Grundlage Ihrer Einwilligung.</p>
+                <h4>Welche personenbezogenen Daten meines Kindes werden bei Teilnahme an einer BigBlueButton Webkonferenz verarbeitet?</h4>
+                <p>F&uuml;r die Teilnahme an einer BigBlueButton Webkonferenz ist <strong>kein eigenes Nutzerkonto</strong> erforderlich. W&auml;hrend einer Webkonferenz werden Metadaten zur Konferenz verarbeitet: Thema, Beschreibung (optional), IP-Nummer
+                    des Teilnehmers und Informationen zum genutzten Endger&auml;t. Bei Nutzung des Chats in BigBlueButton sind die Chat Inhalte Gegenstand der Verarbeitung. Bei Bestehen eines Nutzerkontos (nicht erforderlich), werden au&szlig;erdem folgende
+                    Daten verarbeitet: Name (frei w&auml;hlbar), Nachname, E-Mail, Passwort, Profilbild (optional). Falls eine Aufzeichnung der Konferenz vorgenommen wird, ist dies durch den Konferenzleiter im Einvernehmen mit den Teilnehmern abzustimmen.
+                    Gespeicherte Daten von Webkonferenzen und Chats werden nach vier Wochen gel&ouml;scht, sobald sie f&uuml;r den Unterricht nicht mehr ben&ouml;tigt werden.</p>
+                <h4>Wer hat Zugriff auf die personenbezogenen Daten meines Kindes?</h4>
+                <p><strong>Die Schule</strong> hat <strong>keinen</strong> Zugriff auf Nutzerdaten, falls solche von Sch&uuml;lern erstellt werden. <strong>Alle Teilnehmer einer Webkonferenz</strong> haben Zugriff im Sinne von Sehen, H&ouml;ren und Lesen
+                    auf Inhalte der Webkonferenz und Chats. <strong>Der Anbieter</strong> hat Zugriff auf die verarbeiteten Daten im Rahmen der Auftragsverarbeitung und auf Weisung der Schulleitung.</p>
+                <h4>An wen werden die Daten meines Kindes &uuml;bermittelt?</h4>
+                <p>Das Lyonel-Feininger-Gymnasium, welches mit Unterst&uuml;tzung von einem ehemaligen Sch&uuml;ler die Webkonferenz Plattform auf eigenen Servern betreibt, verarbeitet die anonymisierten Daten Ihres Kindes. D.h. wir d&uuml;rfen die Daten
+                    nur f&uuml;r diesen Zweck der Webkonferenz und nicht f&uuml;r anderweitige Zwecke nutzen, d.h. weder f&uuml;r Werbung noch an Dritte weitergeben.</p>
+                <h4>Wie lange werden die Daten meines Kindes gespeichert?</h4>
+                <p>Die Schule speichert keine personenbezogenen Daten im Zusammenhang mit der Nutzung von BigBlueButton. Falls eine Aufzeichnung der Konferenz vorgenommen wird, ist dies durch den Konferenzleiter im Einvernehmen mit den Teilnehmern abzustimmen.
+                    Gespeicherte Daten von Webkonferenzen und Chats werden nach vier Wochen gel&ouml;scht, sobald sie f&uuml;r den Unterricht nicht mehr ben&ouml;tigt werden. Die Inhalte von Chats und Pr&auml;sentationen werden gel&ouml;scht, sobald ein
+                    Konferenzraum geschlossen wird.</p>
+            </div>
+            <span class="dsgvo-warning-text pr-5">
+              Die Teilnahme an einer Webkonferenz ist <b>freiwillig</b> und erfordert <b>kein</b> eigenes Nutzerkonto. 
+              <br>
+              Teilnehmer können bei einer Webkonferenz einen eigenen Nutzernamen wählen. <br>
+              Wir haben Schulkonten, welche von Lehrkräften genutzt werden, um die Webkonferenzen durchzuführen. 
+              <br>
+              Alle Inhalte der Webkonferenzen und begleitenden Chats bleiben im Kreis der Teilnehmer. <br>
+              Aufzeichnungen der Webkonferenzen durch den Konferenzleiter finden nur im Einvernehmen mit den Schülern und den Eltern statt. <br>
+              Schüler sind gehalten, bei einer Webkonferenz darauf zu achten, dass die Privatsphäre ihrer Familienmitglieder gewahrt bleibt. 
+              <br>
+              Bei Verstößen gegen diese Regel behält die Schule sich vor, Ihr Kind von Webkonferenzen auszuschließen bzw. die Teilnahme auf Audio zu beschränken.
+              <br><br>
+              Durch fortfahren bestätigen Sie, dass Sie älter als 16 Jahre sind oder die Zustimmung eines Erziehungsberechtigten haben <br>und  stimmen den Vereinbarungen zur Nutzung von BigBlueButton zu.
+        </span><br>
+            <span class="dsgvo-warning-button d-inline-block">
+                <a href="https://classroom.lyonel-feininger-gymnasium.de/"><button id="dsgvo-disagree-button" class="btn customBtn bg-primary" >Ich lehne ab</button></a>
+        </span>
+            <span class="dsgvo-warning-button d-inline-block">
+      <button id="dsgvo-agree-button" class="btn customBtn bg-primary" onclick="dsvgobuttonclick()">Ich stimme zu</button>
+    </span>
+        </div>
+    </div>
     <%= form_for room_path(@room), method: :post do |f| %>
       <div class="input-group">
         <%= f.hidden_field(:search, :value => params[:search])%>
