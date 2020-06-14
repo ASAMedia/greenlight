@@ -70,7 +70,9 @@ class User < ApplicationRecord
     end
   end
 
-  def self.admins_search(string, role)
+  def self.admins_search(string)
+    return all if string.blank?
+
     active_database = Rails.configuration.database_configuration[Rails.env]["adapter"]
     # Postgres requires created_at to be cast to a string
     created_at_query = if active_database == "postgresql"
@@ -79,22 +81,12 @@ class User < ApplicationRecord
       "created_at"
     end
 
-    search_query = ""
-    role_search_param = ""
-    if role.nil?
-      search_query = "users.name LIKE :search OR email LIKE :search OR username LIKE :search" \
-                    " OR users.#{created_at_query} LIKE :search OR users.provider LIKE :search" \
-                    " OR roles.name LIKE :roles_search"
-      role_search_param = "%#{string}%"
-    else
-      search_query = "(users.name LIKE :search OR email LIKE :search OR username LIKE :search" \
-                    " OR users.#{created_at_query} LIKE :search OR users.provider LIKE :search)" \
-                    " AND roles.name = :roles_search"
-      role_search_param = role.name
-    end
+    search_query = "users.name LIKE :search OR email LIKE :search OR username LIKE :search" \
+                  " OR users.#{created_at_query} LIKE :search OR users.provider LIKE :search" \
+                  " OR roles.name LIKE :search"
 
-    search_param = "%#{string}%"
-    where(search_query, search: search_param, roles_search: role_search_param)
+    search_param = "%#{sanitize_sql_like(string)}%"
+    where(search_query, search: search_param)
   end
 
   def self.admins_order(column, direction)
@@ -198,6 +190,11 @@ class User < ApplicationRecord
     User.includes(:role).where.not(roles: { name: role })
   end
 
+  def create_home_room
+    room = Room.create!(owner: self, name: I18n.t("home_room"))
+    update_attributes(main_room: room)
+  end
+
   private
 
   # Destory a users rooms when they are removed.
@@ -225,11 +222,6 @@ class User < ApplicationRecord
         errors.add(:email, I18n.t("errors.messages.blank"))
       end
     end
-  end
-
-  def create_home_room
-    room = Room.create!(owner: self, name: I18n.t("home_room"))
-    update_attributes(main_room: room)
   end
 
   def role_provider
