@@ -3,7 +3,8 @@ version: '3'
 services:
   app:
     entrypoint: [bin/start]
-    image: greenlight_app:release-v2
+#    image: greenlight_app:release-v2
+    build: .
     container_name: greenlight_custom
     env_file: .env
     restart: unless-stopped
